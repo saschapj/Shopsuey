@@ -3,4 +3,9 @@
     <string name="nav_addItem">Neuer Artikel</string>
     <string name="nav_shoppingList">Einkaufsliste</string>
     <string name="nav_stock">Lager</string>
+    <string name="etv_artName">Artikelname</string>
+    <string name="btntext_addArticle">Artikel hinzufügen</string>
+    <string name="etv_artDesc">Artikelbeschreibung</string>
+    <string name="etv_artPrice">Preis</string>
+    <string name="row_switch_desc">kaufen</string>
 </resources>
