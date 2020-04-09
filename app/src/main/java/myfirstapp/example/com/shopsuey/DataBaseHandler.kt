@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
+import java.text.FieldPosition
 
 val DATABASE_NAME = "shopsueydb"
 val TABLE_NAME = "StockItems"
@@ -63,5 +64,17 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         result.close()
         db.close()
         return list
+    }
+
+    fun deleteData(id: Int){
+        val db = this.writableDatabase
+
+
+        db.delete(TABLE_NAME, COL_ID+"=?", arrayOf((id).toString()))
+
+
+
+
+        db.close()
     }
 }

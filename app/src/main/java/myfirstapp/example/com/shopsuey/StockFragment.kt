@@ -2,18 +2,15 @@ package myfirstapp.example.com.shopsuey
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import java.text.DecimalFormat
 
 class StockFragment : Fragment() {
-
 
 
     override fun onCreateView(
@@ -23,24 +20,31 @@ class StockFragment : Fragment() {
     ): View? {
 
 
-
-
-
         val view: View = inflater.inflate(R.layout.fragment_stock,container,false)
 
         val listView = view.findViewById<ListView>(R.id.lv_stock)
 
-        listView.adapter = MyCustomAdapter(view.context)
+        val fm = this.requireFragmentManager()
+        val frag = this
+
+        listView.adapter = MyCustomAdapter(view.context,fm,frag)
         return view
     }
 
-    private class MyCustomAdapter(context: Context): BaseAdapter() {
+    private class MyCustomAdapter(
+        context: Context,
+        fragmentManager: FragmentManager,
+        stockFragment: StockFragment
+    ): BaseAdapter() {
 
         val db = DataBaseHandler(context)
         private val mContext: Context
-
+        private val fm : FragmentManager
+        private val sf : StockFragment
         init {
             mContext = context
+            fm = fragmentManager
+            sf = stockFragment
         }
 
         override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
@@ -59,10 +63,21 @@ class StockFragment : Fragment() {
             val dec = DecimalFormat("#,###.00")
             rowItemPrice.text = dec.format(price).toString()+" €"
 
+            var delButton = row_item.findViewById<ImageButton>(R.id.tvRowDeleteButton)
+
+
+            delButton.setOnClickListener({
+                Toast.makeText(mContext,"test",Toast.LENGTH_LONG)
+                db.deleteData(db.readData().get(position).id)
+                val ft = fm.beginTransaction()
+                ft.detach(sf)
+                ft.attach(sf)
+                ft.commit()
+
+            })
+
             return row_item
-            /*val textView = TextView(mContext)
-            textView.text = "here is my row"
-            return textView*/
+
         }
 
         override fun getItem(position: Int): Any {
