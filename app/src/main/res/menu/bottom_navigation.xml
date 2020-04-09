@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_stock"
+        android:icon="@drawable/ic_kitchen_black_24dp"
+        android:title="@string/nav_stock" />
+
+    <item
+        android:id="@+id/nav_shoppingList"
+        android:icon="@drawable/ic_local_grocery_store_black_24dp"
+        android:title="@string/nav_shoppingList" />
+
+    <item
+        android:id="@+id/nav_addItem"
+        android:icon="@drawable/ic_add_circle_outline_black_24dp"
+        android:title="@string/nav_addItem" />
+
+
+</menu>
