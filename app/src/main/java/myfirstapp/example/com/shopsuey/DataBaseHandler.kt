@@ -42,4 +42,26 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
             Toast.makeText(context,"Artikel eingefügt",Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun readData() : MutableList<Item>{
+        var list : MutableList<Item> = ArrayList()
+
+        var db = this.readableDatabase
+        val query = "SELECT * FROM "+ TABLE_NAME
+        var result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()) {
+            do{
+                var item = Item()
+                item.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                item.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
+                item.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
+                item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                list.add(item)
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return list
+    }
 }

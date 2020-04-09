@@ -2,6 +2,7 @@ package myfirstapp.example.com.shopsuey
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +10,21 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import java.text.DecimalFormat
 
 class StockFragment : Fragment() {
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
 
         val view: View = inflater.inflate(R.layout.fragment_stock,container,false)
 
@@ -27,6 +36,7 @@ class StockFragment : Fragment() {
 
     private class MyCustomAdapter(context: Context): BaseAdapter() {
 
+        val db = DataBaseHandler(context)
         private val mContext: Context
 
         init {
@@ -37,6 +47,18 @@ class StockFragment : Fragment() {
 
             val layoutInflater = LayoutInflater.from(mContext)
             val row_item = layoutInflater.inflate(R.layout.row_item,viewGroup,false)
+
+            val rowItemName = row_item.findViewById<TextView>(R.id.tvRowItemName)
+            rowItemName.text = db.readData().get(position).name
+
+            val rowItemDesc = row_item.findViewById<TextView>(R.id.tvRowItemDesc)
+            rowItemDesc.text = db.readData().get(position).description
+
+            val rowItemPrice = row_item.findViewById<TextView>(R.id.tvRowItemPrice)
+            val price = db.readData().get(position).price.toDouble()
+            val dec = DecimalFormat("#,###.00")
+            rowItemPrice.text = dec.format(price).toString()+" €"
+
             return row_item
             /*val textView = TextView(mContext)
             textView.text = "here is my row"
@@ -52,7 +74,7 @@ class StockFragment : Fragment() {
         }
 
         override fun getCount(): Int {
-            return 5
+            return db.readData().size
         }
 
     }

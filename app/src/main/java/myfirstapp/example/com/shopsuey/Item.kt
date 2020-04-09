@@ -2,7 +2,7 @@ package myfirstapp.example.com.shopsuey
 
 
 class Item {
-    var idL: Int = 0
+    var id: Int = 0
     var name: String = ""
     var description: String = ""
     var price : Double = 0.0
@@ -12,4 +12,5 @@ class Item {
         this.description=description
         this.price=price
     }
+    constructor()
 }
