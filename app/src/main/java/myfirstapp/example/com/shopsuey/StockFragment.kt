@@ -28,6 +28,9 @@ class StockFragment : Fragment() {
         val frag = this
 
         listView.adapter = MyCustomAdapter(view.context,fm,frag)
+
+
+
         return view
     }
 
@@ -75,6 +78,17 @@ class StockFragment : Fragment() {
                 ft.commit()
 
             })
+
+            row_item.setOnClickListener({
+                val ft = fm.beginTransaction()
+                val idf = ItemDetailFragment(db.readData().get(position).id)
+
+
+
+                ft.replace(R.id.fragment_container,idf)
+                ft.commit()
+            })
+
 
             return row_item
 

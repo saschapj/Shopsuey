@@ -66,6 +66,28 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         return list
     }
 
+    fun readDataSet(id: Int) : Item? {
+
+
+        var db = this.readableDatabase
+        val query = "SELECT * FROM "+ TABLE_NAME+" WHERE ID="+id
+        var result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()) {
+            do{
+                var item = Item()
+                item.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                item.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
+                item.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
+                item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                return item
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return null
+    }
+
     fun deleteData(id: Int){
         val db = this.writableDatabase
 
