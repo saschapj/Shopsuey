@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import java.text.DecimalFormat
 
 class ItemDetailFragment(datasetId: Int) : Fragment() {
 
@@ -39,7 +40,10 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
         itemDesc.text = readDataSet?.description
 
         val itemPrice = view.findViewById<TextView>(R.id.tv_artdetailprice)
-        itemPrice.text = readDataSet?.price.toString()
+
+        val price = readDataSet?.price.toString().toDouble()
+        val dec = DecimalFormat("#,###.00")
+        itemPrice.text = dec.format(price).toString() + " €"
 
         val itemContent = view.findViewById<TextView>(R.id.tv_artdetailcontent)
         itemContent.text = readDataSet?.content.toString()
