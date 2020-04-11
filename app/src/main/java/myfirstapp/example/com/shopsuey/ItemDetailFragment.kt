@@ -25,7 +25,7 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
 
         val db = DataBaseHandler(requireContext())
 
-        val readDataSet = db.readDataSet(datasetIdLocal)
+        val readDataSet = db.readDataSet(TABLE_STOCK_ITEMS,datasetIdLocal)
 
         Log.d("test",readDataSet?.unit)
 

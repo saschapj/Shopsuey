@@ -48,7 +48,14 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
                     itemContent.text.toString().toInt(),
                     itemUnit.toString())
                 var db = DataBaseHandler(requireContext())
-                db.insertData(item)
+                db.insertDataIntoStockitems(item)
+
+                var lastItemId = db.getLastAddedItem()?.id
+
+                var stock = lastItemId?.let { it1 -> Stock(it1,1) }
+
+                stock?.let { it1 -> db.insertDataIntoStockTable(it1) }
+
             } else{
                 Toast.makeText(context,"Please fill in the data",Toast.LENGTH_LONG)
             }

@@ -40,6 +40,9 @@ class StockFragment : Fragment() {
         stockFragment: StockFragment
     ): BaseAdapter() {
 
+        val TABLE_STOCK_ITEMS = Tablenames.Stockitems.toString()
+        val TABLE_STOCK = Tablenames.Stock.toString()
+
         val db = DataBaseHandler(context)
         private val mContext: Context
         private val fm : FragmentManager
@@ -56,28 +59,28 @@ class StockFragment : Fragment() {
             val row_item = layoutInflater.inflate(R.layout.row_item,viewGroup,false)
 
             val rowItemName = row_item.findViewById<TextView>(R.id.tvRowItemName)
-            rowItemName.text = db.readData().get(position).name
+            rowItemName.text = db.readDataFromStockItems().get(position).name
 
             val rowItemDesc = row_item.findViewById<TextView>(R.id.tvRowItemDesc)
-            rowItemDesc.text = db.readData().get(position).description
+            rowItemDesc.text = db.readDataFromStockItems().get(position).description
 
             val rowItemPrice = row_item.findViewById<TextView>(R.id.tvRowItemPrice)
-            val price = db.readData().get(position).price.toDouble()
+            val price = db.readDataFromStockItems().get(position).price.toDouble()
             val dec = DecimalFormat("#,###.00")
             rowItemPrice.text = dec.format(price).toString()+" €"
 
             val content = row_item.findViewById<TextView>(R.id.tvRowItemContent)
-            content.text = db.readData().get(position).content.toString()
+            content.text = db.readDataFromStockItems().get(position).content.toString()
 
             val unit = row_item.findViewById<TextView>(R.id.tvRowItemUnit)
-            unit.text = db.readData().get(position).unit
+            unit.text = db.readDataFromStockItems().get(position).unit
 
             var delButton = row_item.findViewById<ImageButton>(R.id.tvRowDeleteButton)
 
 
             delButton.setOnClickListener({
                 Toast.makeText(mContext,"test",Toast.LENGTH_LONG)
-                db.deleteData(db.readData().get(position).id)
+                db.deleteData(TABLE_STOCK_ITEMS,db.readDataFromStockItems().get(position).id)
                 val ft = fm.beginTransaction()
                 ft.detach(sf)
                 ft.attach(sf)
@@ -87,7 +90,7 @@ class StockFragment : Fragment() {
 
             row_item.setOnClickListener({
                 val ft = fm.beginTransaction()
-                val idf = ItemDetailFragment(db.readData().get(position).id)
+                val idf = ItemDetailFragment(db.readDataFromStockItems().get(position).id)
 
 
 
@@ -109,7 +112,7 @@ class StockFragment : Fragment() {
         }
 
         override fun getCount(): Int {
-            return db.readData().size
+            return db.readDataFromStockItems().size
         }
 
     }
