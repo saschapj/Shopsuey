@@ -9,6 +9,8 @@
     <string name="etv_artPrice">Preis</string>
     <string name="row_switch_desc">kaufen</string>
     <string name="etv_artContent">Inhalt</string>
+    <string name="stock">Bestand</string>
+    <string name="minStock">Min. Best.</string>
 
     <string-array name="unitArray">
         <item>g</item>

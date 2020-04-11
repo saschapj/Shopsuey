@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
@@ -25,7 +26,9 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
 
         val db = DataBaseHandler(requireContext())
 
-        val readDataSet = db.readDataSet(TABLE_STOCK_ITEMS,datasetIdLocal)
+        val readDataSet = db.readDataSetFromStockItems(datasetIdLocal)
+
+        val readDataStock = db.readDataSetFromStockTable(datasetIdLocal)
 
         Log.d("test",readDataSet?.unit)
 
@@ -39,15 +42,60 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
         itemPrice.text = readDataSet?.price.toString()
 
         val itemContent = view.findViewById<TextView>(R.id.tv_artdetailcontent)
-        itemContent.text = "sdfko"
-        Log.d("test2",readDataSet?.content.toString())
         itemContent.text = readDataSet?.content.toString()
 
 
         val itemUnit = view.findViewById<TextView>(R.id.tv_artdetailunit)
-        itemUnit.text = "sdfkoasedfadse"
         itemUnit.text = readDataSet?.unit.toString()
-        //itemUnit.text = readDataSet?.unit
+
+        val itemStock = view.findViewById<TextView>(R.id.tv_artdetailstock)
+        itemStock.text = readDataStock?.stock.toString()
+
+        val itemMinStock = view.findViewById<TextView>(R.id.tv_artdetailminstock)
+        itemMinStock.text = readDataStock?.minStock.toString()
+
+        val stockDecButton = view.findViewById<Button>(R.id.btn_stockDec)
+        val stockIncButton = view.findViewById<Button>(R.id.btn_stockInc)
+        val minStockDecButton = view.findViewById<Button>(R.id.btn_minStockDec)
+        val minStockIncButton = view.findViewById<Button>(R.id.btn_minStockInc)
+
+        stockDecButton.setOnClickListener({
+            //db.decreaseStock(datasetIdLocal);
+            itemStock.text = readDataStock?.stock.toString()
+        })
+
+        stockIncButton.setOnClickListener({
+            var amount = itemStock.text.toString().toInt()
+            amount++
+            db.increaseStock(amount,datasetIdLocal);
+            itemStock.text = amount.toString()
+
+        })
+
+        stockDecButton.setOnClickListener({
+            var amount = itemStock.text.toString().toInt()
+            amount--
+            db.decreaseStock(amount,datasetIdLocal);
+            itemStock.text = amount.toString()
+
+        })
+
+        minStockIncButton.setOnClickListener({
+            var amount = itemMinStock.text.toString().toInt()
+            amount++
+            db.increaseMinStock(amount,datasetIdLocal);
+            itemMinStock.text = amount.toString()
+
+        })
+
+            minStockDecButton.setOnClickListener({
+            var amount = itemMinStock.text.toString().toInt()
+            amount--
+            db.decreaseMinStock(amount,datasetIdLocal);
+            itemMinStock.text = amount.toString()
+
+        })
+
 
         return view
     }

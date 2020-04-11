@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 import java.text.FieldPosition
 
@@ -20,6 +21,9 @@ val TABLE_STOCK = Tablenames.Stock.toString()
 val COL_ART_ID = "artid"
 val COL_STOCK_AMOUNT="stockamount"
 val COL_MINSTOCK_AMOUNT="minstock"
+
+val TABLE_SHOPPINGLIST = Tablenames.Shoppinglist.toString()
+val COL_AMOUNT = "amount"
 
 class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null,1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -38,9 +42,16 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 COL_MINSTOCK_AMOUNT+ " INTEGER,"+
                 " FOREIGN KEY ("+COL_ART_ID + ") REFERENCES "+ TABLE_STOCK_ITEMS +"("+ COL_ID+"))"
 
+        val createTableShoppingList = "CREATE TABLE "+ TABLE_SHOPPINGLIST+" ("+
+                COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COL_ART_ID + " INTEGER,"+
+                COL_AMOUNT + " INTEGER,"+
+                " FOREIGN KEY ("+COL_ART_ID + ") REFERENCES "+ TABLE_STOCK_ITEMS +"("+ COL_ID+"))"
+
 
         db?.execSQL(createTableStockitems)
         db?.execSQL(createTableStock)
+        db?.execSQL(createTableShoppingList)
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -56,7 +67,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         cv.put(COL_CONTENT,item.content)
         cv.put(COL_UNIT,item.unit)
         var result = db.insert(TABLE_STOCK_ITEMS,null,cv)
-
+        db.close()
         if(result == -1.toLong()) {
             Toast.makeText(context,"failed to insertdata",Toast.LENGTH_SHORT).show()
         } else {
@@ -71,12 +82,43 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         cv.put(COL_STOCK_AMOUNT,1)
         cv.put(COL_MINSTOCK_AMOUNT,0)
         var result = db.insert(TABLE_STOCK,null,cv)
-
+        db.close()
         if(result == -1.toLong()) {
             Toast.makeText(context,"failed to insertdata",Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context,"Artikel eingefügt",Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun readDataForShoppingList() : MutableList<ShoppingListItem>{
+
+        var list : MutableList<ShoppingListItem> = ArrayList()
+
+        var db = this.readableDatabase
+
+        val query = "select name,description,price,content,unit,(minstock-stockamount) as amount from Stock, Stockitems\n" +
+                "   where minstock>stockamount\n" +
+                "   and Stock.artid = Stockitems.id"
+
+
+        var result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()) {
+            do{
+                var shoppingListItem = ShoppingListItem()
+                //shoppingListItem.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                shoppingListItem.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
+                shoppingListItem.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
+                shoppingListItem.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                shoppingListItem.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
+                shoppingListItem.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
+                shoppingListItem.amount = result.getString(result.getColumnIndex(COL_AMOUNT)).toInt()
+                list.add(shoppingListItem)
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return list
     }
 
     fun readDataFromStockItems() : MutableList<Item>{
@@ -103,11 +145,72 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         return list
     }
 
-    fun readDataSet(table:String,id: Int) : Item? {
+
+
+    fun readDataFromStockTable() : MutableList<Stock>{
+        var list : MutableList<Stock> = ArrayList()
+
+        var db = this.readableDatabase
+        val query = "SELECT * FROM "+ TABLE_STOCK
+        var result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()) {
+            do{
+                var stock = Stock()
+                stock.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                stock.art_id = result.getString(result.getColumnIndex(COL_ART_ID)).toInt()
+                stock.stock = result.getString(result.getColumnIndex(COL_STOCK_AMOUNT)).toInt()
+                stock.minStock = result.getString(result.getColumnIndex(COL_MINSTOCK_AMOUNT)).toInt()
+                list.add(stock)
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return list
+    }
+
+
+
+    fun increaseStock(amount: Int,id : Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_STOCK_AMOUNT,amount)
+
+        db.update(TABLE_STOCK,cv,"artid="+id,null)
+        db.close()
+    }
+
+    fun decreaseStock(amount: Int,id : Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_STOCK_AMOUNT,amount)
+        db.update(TABLE_STOCK,cv,"artid="+id,null)
+        db.close()
+    }
+
+    fun increaseMinStock(amount: Int,id : Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_MINSTOCK_AMOUNT,amount)
+        db.update(TABLE_STOCK,cv,"artid="+id,null)
+        db.close()
+    }
+
+    fun decreaseMinStock(amount: Int,id : Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_MINSTOCK_AMOUNT,amount)
+        db.update(TABLE_STOCK,cv,"artid="+id,null)
+        db.close()
+    }
+
+
+
+    fun readDataSetFromStockItems(id: Int) : Item? {
 
 
         var db = this.readableDatabase
-        val query = "SELECT * FROM "+ table+" WHERE ID="+id
+        val query = "SELECT * FROM "+ TABLE_STOCK_ITEMS+" WHERE ID="+id
         var result = db.rawQuery(query,null)
 
         if(result.moveToFirst()) {
@@ -120,6 +223,30 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 item.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
                 item.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
                 return item
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return null
+    }
+
+
+
+    fun readDataSetFromStockTable(id: Int) : Stock? {
+
+
+        var db = this.readableDatabase
+        val query = "SELECT * FROM "+ TABLE_STOCK+" WHERE ARTID="+id
+        var result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()) {
+            do{
+                var stock = Stock()
+                stock.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                stock.art_id = result.getString(result.getColumnIndex(COL_ART_ID)).toInt()
+                stock.stock = result.getString(result.getColumnIndex(COL_STOCK_AMOUNT)).toInt()
+                stock.minStock = result.getString(result.getColumnIndex(COL_MINSTOCK_AMOUNT)).toInt()
+                return stock
             }while (result.moveToNext())
         }
         result.close()
@@ -153,13 +280,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
 
     fun deleteData(table:String,id: Int){
         val db = this.writableDatabase
-
-
         db.delete(table, COL_ID+"=?", arrayOf((id).toString()))
-
-
-
-
         db.close()
     }
 }
