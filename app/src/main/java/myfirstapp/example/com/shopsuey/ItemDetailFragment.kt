@@ -27,6 +27,8 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
 
         val readDataSet = db.readDataSet(datasetIdLocal)
 
+        Log.d("test",readDataSet?.unit)
+
         val itemName = view.findViewById<TextView>(R.id.tv_artdetailname)
         itemName.text = readDataSet?.name
 
@@ -35,6 +37,17 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
 
         val itemPrice = view.findViewById<TextView>(R.id.tv_artdetailprice)
         itemPrice.text = readDataSet?.price.toString()
+
+        val itemContent = view.findViewById<TextView>(R.id.tv_artdetailcontent)
+        itemContent.text = "sdfko"
+        Log.d("test2",readDataSet?.content.toString())
+        itemContent.text = readDataSet?.content.toString()
+
+
+        val itemUnit = view.findViewById<TextView>(R.id.tv_artdetailunit)
+        itemUnit.text = "sdfkoasedfadse"
+        itemUnit.text = readDataSet?.unit.toString()
+        //itemUnit.text = readDataSet?.unit
 
         return view
     }

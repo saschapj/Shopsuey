@@ -67,4 +67,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRowItemAmount" />
 
+    <TextView
+        android:id="@+id/tvRowItemContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="500"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        app:layout_constraintStart_toEndOf="@+id/tvRowItemAmount"
+        app:layout_constraintTop_toBottomOf="@+id/tvRowItemDesc" />
+
+    <TextView
+        android:id="@+id/tvRowItemUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="units"
+        app:layout_constraintStart_toEndOf="@+id/tvRowItemContent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRowItemDesc" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

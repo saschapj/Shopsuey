@@ -66,6 +66,12 @@ class StockFragment : Fragment() {
             val dec = DecimalFormat("#,###.00")
             rowItemPrice.text = dec.format(price).toString()+" €"
 
+            val content = row_item.findViewById<TextView>(R.id.tvRowItemContent)
+            content.text = db.readData().get(position).content.toString()
+
+            val unit = row_item.findViewById<TextView>(R.id.tvRowItemUnit)
+            unit.text = db.readData().get(position).unit
+
             var delButton = row_item.findViewById<ImageButton>(R.id.tvRowDeleteButton)
 
 

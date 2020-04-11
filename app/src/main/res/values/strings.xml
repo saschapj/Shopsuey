@@ -8,4 +8,13 @@
     <string name="etv_artDesc">Artikelbeschreibung</string>
     <string name="etv_artPrice">Preis</string>
     <string name="row_switch_desc">kaufen</string>
+    <string name="etv_artContent">Inhalt</string>
+
+    <string-array name="unitArray">
+        <item>g</item>
+        <item>kg</item>
+        <item>ml</item>
+        <item>l</item>
+        <item>pcs</item>
+    </string-array>
 </resources>

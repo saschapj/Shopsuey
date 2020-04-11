@@ -13,6 +13,11 @@ val COL_NAME = "name"
 val COL_DESCRIPTION = "description"
 val COL_PRICE = "price"
 val COL_ID = "id"
+val COL_CONTENT = "content"
+val COL_UNIT = "unit"
+//angaben ml-gr-stueck
+//angabe inhal)sauce zb 700 ml=
+//angabe rest vorhanden )zb 30 pro cent oder 0,4 oder 1,6 oder wie auch immer
 
 class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null,1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -20,7 +25,9 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_NAME + " VARCHAR(256)," +
                 COL_DESCRIPTION + " VARCHAR(256)," +
-                COL_PRICE + " DECIMAL(5,2))"
+                COL_PRICE + " DECIMAL(5,2)," +
+                COL_CONTENT + " INTEGER," +
+                COL_UNIT + " VARCHAR(3))"
 
         db?.execSQL(createTable)
     }
@@ -35,6 +42,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         cv.put(COL_NAME,item.name)
         cv.put(COL_DESCRIPTION,item.description)
         cv.put(COL_PRICE,item.price)
+        cv.put(COL_CONTENT,item.content)
+        cv.put(COL_UNIT,item.unit)
         var result = db.insert(TABLE_NAME,null,cv)
 
         if(result == -1.toLong()) {
@@ -58,6 +67,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 item.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
                 item.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
                 item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                item.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
+                item.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
                 list.add(item)
             }while (result.moveToNext())
         }
@@ -80,6 +91,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 item.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
                 item.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
                 item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                item.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
+                item.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
                 return item
             }while (result.moveToNext())
         }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
 
@@ -8,10 +10,12 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:hint="@string/etv_artName"
         android:textAlignment="center"
-        android:textColor="@color/design_default_color_on_secondary" />
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etv_artDesc"
@@ -19,10 +23,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="100dp"
         android:hint="@string/etv_artDesc"
         android:textAlignment="center"
-        android:textColor="@color/design_default_color_on_secondary" />
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etv_artName" />
 
     <EditText
         android:id="@+id/etv_artPrice"
@@ -30,17 +37,53 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="210dp"
-        android:inputType="numberDecimal"
+        android:layout_marginTop="100dp"
         android:hint="@string/etv_artPrice"
+        android:inputType="numberDecimal"
         android:textAlignment="center"
-        android:textColor="@color/design_default_color_on_secondary" />
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etv_artDesc" />
+
+    <EditText
+        android:id="@+id/etv_artContent"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/etv_artPrice"
+        android:hint="@string/etv_artContent"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etv_artPrice" />
+
+    <Spinner
+        android:id="@+id/spinnerUnit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etv_artPrice"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/etv_artPrice" />
 
     <Button
         android:id="@+id/btn_addArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="310dp"
-        android:text="@string/btntext_addArticle" />
-</RelativeLayout>
+        android:layout_marginTop="50dp"
+        android:text="@string/btntext_addArticle"
+        app:layout_constraintTop_toBottomOf="@+id/etv_artContent"
+        tools:layout_editor_absoluteX="40dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
