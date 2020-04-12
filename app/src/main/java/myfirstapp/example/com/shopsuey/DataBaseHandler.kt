@@ -90,31 +90,36 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         }
     }
 
-    fun readDataForShoppingList() : MutableList<ShoppingListItem>{
+    fun readDataForShoppingList() : MutableList<ShoppingListItem> {
 
-        var list : MutableList<ShoppingListItem> = ArrayList()
+        var list: MutableList<ShoppingListItem> = ArrayList()
 
         var db = this.readableDatabase
 
-        val query = "select name,description,price,content,unit,(minstock-stockamount) as amount from Stock, Stockitems\n" +
-                "   where minstock>stockamount\n" +
-                "   and Stock.artid = Stockitems.id"
+        val query =
+            "select name,description,price,content,unit,(minstock-stockamount) as amount from Stock, Stockitems\n" +
+                    "   where minstock>stockamount\n" +
+                    "   and Stock.artid = Stockitems.id"
 
 
-        var result = db.rawQuery(query,null)
+        var result = db.rawQuery(query, null)
 
-        if(result.moveToFirst()) {
-            do{
+        if (result.moveToFirst()) {
+            do {
                 var shoppingListItem = ShoppingListItem()
                 //shoppingListItem.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 shoppingListItem.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
-                shoppingListItem.description = result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
-                shoppingListItem.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
-                shoppingListItem.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
+                shoppingListItem.description =
+                    result.getString(result.getColumnIndex(COL_DESCRIPTION)).toString()
+                shoppingListItem.price =
+                    result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
+                shoppingListItem.content =
+                    result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
                 shoppingListItem.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
-                shoppingListItem.amount = result.getString(result.getColumnIndex(COL_AMOUNT)).toInt()
+                shoppingListItem.amount =
+                    result.getString(result.getColumnIndex(COL_AMOUNT)).toInt()
                 list.add(shoppingListItem)
-            }while (result.moveToNext())
+            } while (result.moveToNext())
         }
         result.close()
         db.close()

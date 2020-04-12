@@ -36,6 +36,7 @@ class ShoppingListFragment : Fragment() {
 
             val TABLE_STOCK_ITEMS = Tablenames.Stockitems.toString()
             val TABLE_STOCK = Tablenames.Stock.toString()
+            var sumPrices = 0.0
 
             val db = DataBaseHandler(context)
             private val mContext: Context
@@ -86,6 +87,15 @@ class ShoppingListFragment : Fragment() {
                     val unit = row_ShoppingItem.findViewById<TextView>(R.id.tvShoppingUnit)
                     unit.text = readDataForShoppingList.get(position).unit
 
+                    val buyingAmount = row_ShoppingItem.findViewById<TextView>(R.id.tvBuyingAmount)
+                    buyingAmount.text = readDataForShoppingList.get(position).amount.toString() +" x"
+
+                    val sumTv = viewGroup?.rootView?.findViewById<TextView>(R.id.tvShoppingSum)
+                    val sum = getSum(db.readDataForShoppingList())
+
+                    sumTv?.text = "Total: "+dec.format(sum).toString() + " €"
+
+
 
                 row_ShoppingItem.setOnClickListener({
                     val ft = fm.beginTransaction()
@@ -110,6 +120,14 @@ class ShoppingListFragment : Fragment() {
 
             override fun getCount(): Int {
                 return db.readDataFromStockItems().size
+            }
+
+            fun getSum(list:MutableList<ShoppingListItem>):Double{
+                var sum=0.0
+                for(item in list) {
+                    sum+=item.price*item.amount
+                }
+                return sum
             }
 
 

@@ -26,31 +26,23 @@
         app:layout_constraintTop_toBottomOf="@+id/tvShoppingRowName" />
 
     <TextView
-        android:id="@+id/tvShoppingAmount"
-        android:layout_marginTop="10dp"
+        android:id="@+id/tvShoppingContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginTop="10dp"
+        android:text="500"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvShoppingRowDesc" />
 
     <TextView
-        android:id="@+id/tvShoppingContent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="500"
-        app:layout_constraintStart_toEndOf="@+id/tvShoppingAmount"
-        app:layout_constraintTop_toBottomOf="@+id/tvShoppingRowDesc" />
-
-    <TextView
         android:id="@+id/tvShoppingUnit"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:text="Units"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tvShoppingContent"
         app:layout_constraintTop_toBottomOf="@+id/tvShoppingRowDesc" />
 
@@ -58,8 +50,24 @@
         android:id="@+id/tvShoppingRowPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="100dp"
         android:text="tvShoppingRowPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvShoppingAmount"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Price" />
+
+    <TextView
+        android:id="@+id/tvBuyingAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="amount"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvShoppingRowPrice"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
