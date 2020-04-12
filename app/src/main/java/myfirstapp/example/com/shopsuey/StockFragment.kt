@@ -1,7 +1,9 @@
 package myfirstapp.example.com.shopsuey
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +23,7 @@ class StockFragment : Fragment() {
 
 
         val view: View = inflater.inflate(R.layout.fragment_stock,container,false)
-
         val listView = view.findViewById<ListView>(R.id.lv_stock)
-
         val fm = this.requireFragmentManager()
         val frag = this
 
@@ -74,6 +74,27 @@ class StockFragment : Fragment() {
 
             val unit = row_item.findViewById<TextView>(R.id.tvRowItemUnit)
             unit.text = db.readDataFromStockItems().get(position).unit
+
+            val orderSwitch=row_item.findViewById<Switch>(R.id.tvRowOrderSwitch)
+
+            if(db.readDataFromStockItems().get(position).buyToggle==0&&orderSwitch.isChecked) {
+                orderSwitch.toggle()
+            } else if(db.readDataFromStockItems().get(position).buyToggle==1&&!orderSwitch.isChecked) {
+                orderSwitch.toggle()
+            }
+
+            val toggleValue = db.readDataFromStockItems().get(position).buyToggle
+
+            orderSwitch.setOnCheckedChangeListener{
+                compoundButton, switch ->
+                if(switch) {
+                    Log.d("buy", "buy")
+                    db.turnOnBuy(db.readDataFromStockItems().get(position).id)
+                }
+                else  {
+                    db.turnOffBuy(db.readDataFromStockItems().get(position).id)
+                }
+            }
 
             var delButton = row_item.findViewById<ImageButton>(R.id.tvRowDeleteButton)
 

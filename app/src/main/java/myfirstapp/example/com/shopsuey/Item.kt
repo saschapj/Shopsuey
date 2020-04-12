@@ -8,6 +8,7 @@ class Item {
     var price : Double = 0.0
     var content : Int = 0
     var unit : String =""
+    var buyToggle: Int = 1
 
     constructor(name:String,description: String,price:Double,content:Int,unit:String) {
         this.name=name

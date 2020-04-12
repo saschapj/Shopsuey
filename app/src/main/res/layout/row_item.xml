@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:text="@string/row_switch_desc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRowDeleteButton" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRowDeleteButton"
+        android:checked="true" />
 
     <TextView
         android:id="@+id/tvRowItemAmount"

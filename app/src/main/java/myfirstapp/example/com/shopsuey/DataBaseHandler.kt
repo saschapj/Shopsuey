@@ -16,6 +16,7 @@ val COL_PRICE = "price"
 val COL_ID = "id"
 val COL_CONTENT = "content"
 val COL_UNIT = "unit"
+val COL_BUY_TOGGLE = "buytoggle"
 
 val TABLE_STOCK = Tablenames.Stock.toString()
 val COL_ART_ID = "artid"
@@ -33,7 +34,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 COL_DESCRIPTION + " VARCHAR(256)," +
                 COL_PRICE + " DECIMAL(5,2)," +
                 COL_CONTENT + " INTEGER," +
-                COL_UNIT + " VARCHAR(3))"
+                COL_UNIT + " VARCHAR(3),"+
+                COL_BUY_TOGGLE + " INTEGER)"
 
         val createTableStock = "CREATE TABLE "+ TABLE_STOCK+" ("+
                 COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -66,6 +68,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         cv.put(COL_PRICE,item.price)
         cv.put(COL_CONTENT,item.content)
         cv.put(COL_UNIT,item.unit)
+        cv.put(COL_BUY_TOGGLE,item.buyToggle)
         var result = db.insert(TABLE_STOCK_ITEMS,null,cv)
         db.close()
         if(result == -1.toLong()) {
@@ -99,7 +102,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         val query =
             "select name,description,price,content,unit,(minstock-stockamount) as amount from Stock, Stockitems\n" +
                     "   where minstock>stockamount\n" +
-                    "   and Stock.artid = Stockitems.id"
+                    "   and Stock.artid = Stockitems.id"+
+                    "   and buytoggle=1"
 
 
         var result = db.rawQuery(query, null)
@@ -142,6 +146,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
                 item.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
                 item.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
+                item.buyToggle= result.getString(result.getColumnIndex(COL_BUY_TOGGLE)).toInt()
                 list.add(item)
             }while (result.moveToNext())
         }
@@ -152,7 +157,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
 
 
 
-    fun readDataFromStockTable() : MutableList<Stock>{
+    /*fun readDataFromStockTable() : MutableList<Stock>{
         var list : MutableList<Stock> = ArrayList()
 
         var db = this.readableDatabase
@@ -172,7 +177,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         result.close()
         db.close()
         return list
-    }
+    }*/
 
 
 
@@ -193,6 +198,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
+
+
     fun increaseMinStock(amount: Int,id : Int) {
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -209,6 +216,23 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
+    fun turnOnBuy(id:Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_BUY_TOGGLE,1)
+
+        db.update(TABLE_STOCK_ITEMS,cv,"id="+id,null)
+        db.close()
+    }
+
+    fun turnOffBuy(id:Int) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_BUY_TOGGLE,0)
+
+        db.update(TABLE_STOCK_ITEMS,cv,"id="+id,null)
+        db.close()
+    }
 
 
     fun readDataSetFromStockItems(id: Int) : Item? {
@@ -227,6 +251,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 item.price = result.getString(result.getColumnIndex(COL_PRICE)).toDouble()
                 item.content = result.getString(result.getColumnIndex(COL_CONTENT)).toInt()
                 item.unit = result.getString(result.getColumnIndex(COL_UNIT)).toString()
+                item.buyToggle=result.getString(result.getColumnIndex(COL_BUY_TOGGLE)).toInt()
                 return item
             }while (result.moveToNext())
         }
