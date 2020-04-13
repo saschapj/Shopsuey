@@ -26,6 +26,8 @@ val COL_MINSTOCK_AMOUNT="minstock"
 val TABLE_SHOPPINGLIST = Tablenames.Shoppinglist.toString()
 val COL_AMOUNT = "amount"
 
+val TABLE_NOTES = Tablenames.Notes.toString()
+
 class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null,1) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableStockitems = "CREATE TABLE "+ TABLE_STOCK_ITEMS+" ("+
@@ -50,10 +52,17 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 COL_AMOUNT + " INTEGER,"+
                 " FOREIGN KEY ("+COL_ART_ID + ") REFERENCES "+ TABLE_STOCK_ITEMS +"("+ COL_ID+"))"
 
+        val createTableNotes = "CREATE TABLE "+ TABLE_NOTES+" ("+
+                COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COL_NAME + " VARCHAR(256))"
+
+
+
 
         db?.execSQL(createTableStockitems)
         db?.execSQL(createTableStock)
         db?.execSQL(createTableShoppingList)
+        db?.execSQL(createTableNotes)
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -78,6 +87,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         }
     }
 
+
     fun insertDataIntoStockTable(stock: Stock) {
         val db = this.writableDatabase
         var cv=ContentValues()
@@ -92,6 +102,45 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
             Toast.makeText(context,"Artikel eingefügt",Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun insertDataIntoNoteTable(item: NotesItem) {
+        val db = this.writableDatabase
+        var cv=ContentValues()
+        cv.put(COL_NAME,item.name)
+
+        var result = db.insert(TABLE_NOTES,null,cv)
+        db.close()
+        if(result == -1.toLong()) {
+            Toast.makeText(context,"failed to insert data",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context,"Artikel eingefügt",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun readDataForNotesList() : MutableList<NotesItem> {
+
+        var list: MutableList<NotesItem> = ArrayList()
+
+        var db = this.readableDatabase
+
+        val query =
+            "select name from Notes"
+
+        var result = db.rawQuery(query, null)
+
+        if (result.moveToFirst()) {
+            do {
+                var noteItem = NotesItem()
+
+                noteItem.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
+                list.add(noteItem)
+            } while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return list
+    }
+
 
     fun readDataForShoppingList() : MutableList<ShoppingListItem> {
 

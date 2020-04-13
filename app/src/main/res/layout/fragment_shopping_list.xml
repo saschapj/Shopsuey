@@ -8,42 +8,57 @@
     >
 
 
-
     <ListView
 
         android:id="@+id/lv_shoppingList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tvShoppingSum">
-        <!--android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"-->
+        android:layout_above="@+id/tvShoppingSum"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="139dp">
 
     </ListView>
 
     <TextView
         android:id="@+id/tvShoppingSum"
 
-        android:layout_width="412dp"
-        android:layout_height="43dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="205dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="-1dp"
         android:layout_marginBottom="0dp"
         android:background="@color/cardview_shadow_start_color"
         android:gravity="center|fill_horizontal"
-        android:text="TextView"
+        android:text="00,00 €"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold" />
-    "
-        android:textSize="30sp"
-        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_addNote"
+        android:layout_width="206dp"
+        android:layout_height="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/btntext_addNote" />
+
+    <ListView
+        android:id="@+id/lv_notes"
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="65dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false" />
 
 
 </RelativeLayout>
