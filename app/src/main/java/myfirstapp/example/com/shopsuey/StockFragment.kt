@@ -70,7 +70,11 @@ class StockFragment : Fragment() {
             rowItemPrice.text = dec.format(price).toString()+" €"
 
             val content = row_item.findViewById<TextView>(R.id.tvRowItemContent)
-            content.text = db.readDataFromStockItems().get(position).content.toString()
+
+            val decInt = DecimalFormat("###,###,###")
+
+
+            content.text = decInt.format(db.readDataFromStockItems().get(position).content.toString().toInt()).toString()
 
             val unit = row_item.findViewById<TextView>(R.id.tvRowItemUnit)
             unit.text = db.readDataFromStockItems().get(position).unit
@@ -112,9 +116,6 @@ class StockFragment : Fragment() {
             row_item.setOnClickListener({
                 val ft = fm.beginTransaction()
                 val idf = ItemDetailFragment(db.readDataFromStockItems().get(position).id)
-
-
-
                 ft.replace(R.id.fragment_container,idf)
                 ft.commit()
             })

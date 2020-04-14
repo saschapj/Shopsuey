@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.fragment_add_note.*
@@ -94,7 +95,10 @@ class ShoppingListFragment : Fragment() {
                 rowItemPrice.text = dec.format(price).toString() + " €"
 
                 val content = row_ShoppingItem.findViewById<TextView>(R.id.tvShoppingContent)
-                content.text = readDataForShoppingList.get(position).content.toString()
+
+                val decInt = DecimalFormat("###,###,###")
+
+                content.text = decInt.format(readDataForShoppingList.get(position).content.toString().toInt()).toString()
 
 
                 val unit = row_ShoppingItem.findViewById<TextView>(R.id.tvShoppingUnit)
@@ -170,10 +174,6 @@ class ShoppingListFragment : Fragment() {
         override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
             var row_NoteItem = View(mContext)
 
-
-
-                Log.d("asdfsadefsedf", "TEEEEEEEEEEEEEEEEEEEEEEEEST")
-
                 val layoutInflater = LayoutInflater.from(mContext)
                 val readDataForNotesList = db.readDataForNotesList()
 
@@ -182,6 +182,18 @@ class ShoppingListFragment : Fragment() {
                 val rowItemName =
                     row_NoteItem.findViewById<TextView>(R.id.tvRowItemName)
                 rowItemName.text = readDataForNotesList.get(position).name
+
+
+            var delButton = row_NoteItem.findViewById<AppCompatImageButton>(R.id.tvNoteRowDeleteButton)
+            delButton.setOnClickListener({
+                Toast.makeText(mContext,"test",Toast.LENGTH_LONG)
+                db.deleteData(TABLE_NOTES,readDataForNotesList.get(position).id.toInt())
+                val ft = fm.beginTransaction()
+                ft.detach(sf)
+                ft.attach(sf)
+                ft.commit()
+
+            })
 
             return row_NoteItem
 
@@ -198,6 +210,10 @@ class ShoppingListFragment : Fragment() {
         override fun getCount(): Int {
             return db.readDataForNotesList().size
         }
+
+
+
+
 
     }
 

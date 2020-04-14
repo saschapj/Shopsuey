@@ -123,8 +123,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
 
         var db = this.readableDatabase
 
-        val query =
-            "select name from Notes"
+        val query = "select * from Notes"
 
         var result = db.rawQuery(query, null)
 
@@ -133,6 +132,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 var noteItem = NotesItem()
 
                 noteItem.name = result.getString(result.getColumnIndex(COL_NAME)).toString()
+                noteItem.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 list.add(noteItem)
             } while (result.moveToNext())
         }

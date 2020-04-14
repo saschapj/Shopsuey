@@ -46,8 +46,18 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
         itemPrice.text = dec.format(price).toString() + " €"
 
         val itemContent = view.findViewById<TextView>(R.id.tv_artdetailcontent)
-        itemContent.text = readDataSet?.content.toString()
 
+
+        val amountToString = readDataSet?.content.toString()
+
+        val decInt = DecimalFormat("###,###,###")
+
+        itemContent.text = decInt.format(amountToString.toInt()).toString()//amountToString
+
+
+
+
+//        itemContent.text = dec.format(itemContent).toString()
 
         val itemUnit = view.findViewById<TextView>(R.id.tv_artdetailunit)
         itemUnit.text = readDataSet?.unit.toString()
