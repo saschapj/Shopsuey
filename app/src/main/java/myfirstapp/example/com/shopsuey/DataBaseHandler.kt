@@ -283,6 +283,22 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
+    fun updateDataIntoStockitems(item: Item) {
+
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_NAME,item.name)
+        cv.put(COL_DESCRIPTION,item.description)
+        cv.put(COL_UNIT,item.unit)
+        cv.put(COL_CONTENT,item.content)
+        cv.put(COL_PRICE,item.price)
+
+        Log.d("price",item.price.toString())
+        Log.d("id",item.id.toString())
+
+        db.update(TABLE_STOCK_ITEMS,cv,"id="+item.id,null)
+        db.close()
+    }
 
     fun readDataSetFromStockItems(id: Int) : Item? {
 

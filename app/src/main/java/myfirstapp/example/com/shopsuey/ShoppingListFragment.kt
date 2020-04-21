@@ -146,8 +146,6 @@ class ShoppingListFragment : Fragment() {
             }
             return sum
         }
-
-
     }
 
     private class MyNoteAdapter(
@@ -210,10 +208,6 @@ class ShoppingListFragment : Fragment() {
         override fun getCount(): Int {
             return db.readDataForNotesList().size
         }
-
-
-
-
 
     }
 

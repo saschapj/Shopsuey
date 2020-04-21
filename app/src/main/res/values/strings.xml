@@ -12,6 +12,7 @@
     <string name="stock">Bestand</string>
     <string name="minStock">Min. Best.</string>
     <string name="btntext_addNote">Notiz hinzufügen</string>
+    <string name="btntext_editArticle">Artikel bearbeiten</string>
 
     <string-array name="unitArray">
         <item>g</item>

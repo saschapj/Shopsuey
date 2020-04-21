@@ -36,9 +36,9 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
 
         ArrayAdapter.createFromResource(view.context,R.array.unitArray,android.R.layout.simple_spinner_item).also {
             adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            unitSpinner.adapter = adapter
-        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        unitSpinner.adapter = adapter
+    }
 
         addItemButton.setOnClickListener({
             if(itemName.text.toString().length>0&&itemPrice.text.toString().length>0&&itemContent.text.toString().length>0) {

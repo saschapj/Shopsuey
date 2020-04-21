@@ -73,7 +73,6 @@ class StockFragment : Fragment() {
 
             val decInt = DecimalFormat("###,###,###")
 
-
             content.text = decInt.format(db.readDataFromStockItems().get(position).content.toString().toInt()).toString()
 
             val unit = row_item.findViewById<TextView>(R.id.tvRowItemUnit)
@@ -104,12 +103,22 @@ class StockFragment : Fragment() {
 
 
             delButton.setOnClickListener({
-                Toast.makeText(mContext,"test",Toast.LENGTH_LONG)
                 db.deleteData(TABLE_STOCK_ITEMS,db.readDataFromStockItems().get(position).id)
                 val ft = fm.beginTransaction()
                 ft.detach(sf)
                 ft.attach(sf)
                 ft.commit()
+
+            })
+
+            var editButton = row_item.findViewById<ImageButton>(R.id.tvRowEditButton)
+
+            editButton.setOnClickListener({
+
+                val ftr = fm.beginTransaction()
+                val editFragment = EditItemFragment(db.readDataFromStockItems().get(position).id)
+                ftr.replace(R.id.fragment_container,editFragment)
+                ftr.commit()
 
             })
 
