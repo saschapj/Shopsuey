@@ -110,7 +110,7 @@ class ShoppingListFragment : Fragment() {
                 val sumTv = viewGroup?.rootView?.findViewById<TextView>(R.id.tvShoppingSum)
                 val sum = getSum(db.readDataForShoppingList())
 
-                sumTv?.text = "Total: " + dec.format(sum).toString() + " €"
+                sumTv?.text = dec.format(sum).toString() + " €"
 
 
 

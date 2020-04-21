@@ -31,6 +31,12 @@ class NoteFragment : Fragment(){
                 var db = DataBaseHandler(requireContext())
                 db.insertDataIntoNoteTable(item)
 
+                val fm = this.requireFragmentManager()
+                val ft = fm.beginTransaction()
+                val slf = ShoppingListFragment()
+                ft.replace(R.id.fragment_container,slf)
+                ft.commit()
+
             } else{
                 Toast.makeText(context,"Please fill in the data",Toast.LENGTH_LONG)
             }
