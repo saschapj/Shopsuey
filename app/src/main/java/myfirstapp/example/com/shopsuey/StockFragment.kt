@@ -1,7 +1,7 @@
 package myfirstapp.example.com.shopsuey
 
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import java.text.DecimalFormat
+
 
 class StockFragment : Fragment() {
 
@@ -29,8 +30,6 @@ class StockFragment : Fragment() {
 
         listView.adapter = MyCustomAdapter(view.context,fm,frag)
 
-
-
         return view
     }
 
@@ -39,6 +38,7 @@ class StockFragment : Fragment() {
         fragmentManager: FragmentManager,
         stockFragment: StockFragment
     ): BaseAdapter() {
+
 
         val TABLE_STOCK_ITEMS = Tablenames.Stockitems.toString()
         val TABLE_STOCK = Tablenames.Stock.toString()
@@ -72,6 +72,7 @@ class StockFragment : Fragment() {
             val content = row_item.findViewById<TextView>(R.id.tvRowItemContent)
 
             val decInt = DecimalFormat("###,###,###")
+
 
             content.text = decInt.format(db.readDataFromStockItems().get(position).content.toString().toInt()).toString()
 

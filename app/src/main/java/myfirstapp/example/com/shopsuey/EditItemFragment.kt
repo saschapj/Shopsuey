@@ -49,8 +49,11 @@ class EditItemFragment(datasetId: Int) : Fragment(), AdapterView.OnItemSelectedL
         val itemPrice = view.findViewById<TextView>(R.id.etv_artPriceEdit)
 
         val price = readDataSet?.price.toString().toDouble()
-        val dec = DecimalFormat("#,###.00")
-        itemPrice.text = dec.format(price).toString() + " €"
+        Log.d("test",price.toString())
+
+        itemPrice.text = price.toString()
+ /*       val dec = DecimalFormat("#,###.00")
+        itemPrice.text = dec.format(price).toString() + " €"*/
 
         val itemContent = view.findViewById<TextView>(R.id.etv_artContentEdit)
 
@@ -92,7 +95,7 @@ class EditItemFragment(datasetId: Int) : Fragment(), AdapterView.OnItemSelectedL
             if(itemName.text.toString().length>0&&itemPrice.text.toString().length>0&&itemContent.text.toString().length>0) {
                 var item = Item(itemName.text.toString(),
                     itemDesc.text.toString(),
-                    itemPrice.text.split(" €")[0].replace(".","",true).replace(",","",true).toString().toDouble(),
+                    itemPrice.text.toString().toDouble(),
                     itemContent.text.toString().toInt(),
                     itemUnit.toString())
                 var db = DataBaseHandler(requireContext())
