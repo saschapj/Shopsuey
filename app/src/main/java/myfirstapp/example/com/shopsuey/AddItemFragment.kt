@@ -18,6 +18,7 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_add_item,container,false)
 
@@ -55,6 +56,15 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
                 var stock = lastItemId?.let { it1 -> Stock(it1,1) }
 
                 stock?.let { it1 -> db.insertDataIntoStockTable(it1) }
+
+                val fm = this.requireFragmentManager()
+                val frag = this
+
+                val ft = fm.beginTransaction()
+                val sf = StockFragment()
+                ft.replace(R.id.fragment_container,sf)
+                ft.commit()
+
 
             } else{
                 Toast.makeText(context,"Please fill in the data",Toast.LENGTH_LONG)

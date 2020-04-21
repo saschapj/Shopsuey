@@ -102,11 +102,12 @@ class EditItemFragment(datasetId: Int) : Fragment(), AdapterView.OnItemSelectedL
                 Log.d("testid",item.id.toString())
                 db.updateDataIntoStockitems(item) //Update where...
 
-                var lastItemId = db.getLastAddedItem()?.id
+                val fm = this.requireFragmentManager()
 
-                var stock = lastItemId?.let { it1 -> Stock(it1,1) }
-
-                stock?.let { it1 -> db.insertDataIntoStockTable(it1) }
+                val ft = fm.beginTransaction()
+                val sf = StockFragment()
+                ft.replace(R.id.fragment_container,sf)
+                ft.commit()
 
             } else{
                 Toast.makeText(context,"Please fill in the data", Toast.LENGTH_LONG)
