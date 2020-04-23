@@ -35,11 +35,12 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
 
         unitSpinner.onItemSelectedListener = this
 
+
         ArrayAdapter.createFromResource(view.context,R.array.unitArray,android.R.layout.simple_spinner_item).also {
-            adapter ->
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        unitSpinner.adapter = adapter
-    }
+                adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            unitSpinner.adapter = adapter
+        }
 
         addItemButton.setOnClickListener({
             if(itemName.text.toString().length>0&&itemPrice.text.toString().length>0&&itemContent.text.toString().length>0) {
@@ -78,8 +79,8 @@ class AddItemFragment : Fragment(),AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-        Log.d("test",options.get(position))
 
-        itemUnit = options.get(position)
+            itemUnit = options.get(position)
+
     }
 }

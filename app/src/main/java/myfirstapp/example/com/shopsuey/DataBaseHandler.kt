@@ -183,7 +183,7 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         var list : MutableList<Item> = ArrayList()
 
         var db = this.readableDatabase
-        val query = "SELECT * FROM "+ TABLE_STOCK_ITEMS
+        val query = "SELECT * FROM "+ TABLE_STOCK_ITEMS + " ORDER BY "+ COL_NAME+" ASC"
         var result = db.rawQuery(query,null)
 
         if(result.moveToFirst()) {
