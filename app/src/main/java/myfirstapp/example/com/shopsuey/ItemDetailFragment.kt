@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import java.text.DecimalFormat
+import kotlin.math.*
 
 class ItemDetailFragment(datasetId: Int) : Fragment() {
 
@@ -16,6 +17,7 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
 
     init {
         datasetIdLocal = datasetId
+
     }
 
     override fun onCreateView(
@@ -63,6 +65,7 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
         itemUnit.text = readDataSet?.unit.toString()
 
         val itemStock = view.findViewById<TextView>(R.id.tv_artdetailstock)
+        var stockDisplay = readDataStock?.stock
         itemStock.text = readDataStock?.stock.toString()
 
         val itemMinStock = view.findViewById<TextView>(R.id.tv_artdetailminstock)
@@ -73,40 +76,37 @@ class ItemDetailFragment(datasetId: Int) : Fragment() {
         val minStockDecButton = view.findViewById<Button>(R.id.btn_minStockDec)
         val minStockIncButton = view.findViewById<Button>(R.id.btn_minStockInc)
 
-        stockDecButton.setOnClickListener({
-            //db.decreaseStock(datasetIdLocal);
-            itemStock.text = readDataStock?.stock.toString()
-        })
 
         stockIncButton.setOnClickListener({
-            var amount = itemStock.text.toString().toInt()
-            amount++
-            db.increaseStock(amount,datasetIdLocal);
-            itemStock.text = amount.toString()
-
+            var amount = itemStock.text.toString().toDouble()
+            amount += 0.1
+            db.changeStock(amount,datasetIdLocal)
+            var displayAmount = String.format("%.2f",amount)
+            itemStock.text = displayAmount
         })
 
         stockDecButton.setOnClickListener({
-            var amount = itemStock.text.toString().toInt()
-            amount--
-            db.decreaseStock(amount,datasetIdLocal);
-            itemStock.text = amount.toString()
-
+            var amount = itemStock.text.toString().toDouble()
+            amount-=0.1
+            db.changeStock(amount,datasetIdLocal)
+            var displayAmount = String.format("%.2f",amount)
+            itemStock.text = displayAmount
         })
 
         minStockIncButton.setOnClickListener({
-            var amount = itemMinStock.text.toString().toInt()
-            amount++
-            db.increaseMinStock(amount,datasetIdLocal);
-            itemMinStock.text = amount.toString()
-
+            var amount = itemMinStock.text.toString().toDouble()
+            amount+=0.1
+            db.changeMinStock(amount,datasetIdLocal)
+            var displayAmount = String.format("%.2f",amount)
+            itemMinStock.text = displayAmount
         })
 
             minStockDecButton.setOnClickListener({
-            var amount = itemMinStock.text.toString().toInt()
-            amount--
-            db.decreaseMinStock(amount,datasetIdLocal);
-            itemMinStock.text = amount.toString()
+                var amount = itemMinStock.text.toString().toDouble()
+                amount-=0.1
+                db.changeMinStock(amount,datasetIdLocal)
+                var displayAmount = String.format("%.2f",amount)
+                itemMinStock.text = displayAmount
 
         })
 

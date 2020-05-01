@@ -42,8 +42,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         val createTableStock = "CREATE TABLE "+ TABLE_STOCK+" ("+
                 COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_ART_ID + " INTEGER,"+
-                COL_STOCK_AMOUNT + " INTEGER,"+
-                COL_MINSTOCK_AMOUNT+ " INTEGER,"+
+                COL_STOCK_AMOUNT + " REAL,"+
+                COL_MINSTOCK_AMOUNT+ " REAL,"+
                 " FOREIGN KEY ("+COL_ART_ID + ") REFERENCES "+ TABLE_STOCK_ITEMS +"("+ COL_ID+"))"
 
         val createTableShoppingList = "CREATE TABLE "+ TABLE_SHOPPINGLIST+" ("+
@@ -92,8 +92,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
         val db = this.writableDatabase
         var cv=ContentValues()
         cv.put(COL_ART_ID,stock.art_id)
-        cv.put(COL_STOCK_AMOUNT,1)
-        cv.put(COL_MINSTOCK_AMOUNT,0)
+        cv.put(COL_STOCK_AMOUNT,1.0f)
+        cv.put(COL_MINSTOCK_AMOUNT,0.0f)
         var result = db.insert(TABLE_STOCK,null,cv)
         db.close()
         if(result == -1.toLong()) {
@@ -205,65 +205,24 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
     }
 
 
-
-    /*fun readDataFromStockTable() : MutableList<Stock>{
-        var list : MutableList<Stock> = ArrayList()
-
-        var db = this.readableDatabase
-        val query = "SELECT * FROM "+ TABLE_STOCK
-        var result = db.rawQuery(query,null)
-
-        if(result.moveToFirst()) {
-            do{
-                var stock = Stock()
-                stock.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
-                stock.art_id = result.getString(result.getColumnIndex(COL_ART_ID)).toInt()
-                stock.stock = result.getString(result.getColumnIndex(COL_STOCK_AMOUNT)).toInt()
-                stock.minStock = result.getString(result.getColumnIndex(COL_MINSTOCK_AMOUNT)).toInt()
-                list.add(stock)
-            }while (result.moveToNext())
-        }
-        result.close()
-        db.close()
-        return list
-    }*/
-
-
-
-    fun increaseStock(amount: Int,id : Int) {
+    fun changeStock(amount: Double,id : Int) {
+        var formattedamount = String.format("%.2f",amount)
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(COL_STOCK_AMOUNT,amount)
-
+        cv.put(COL_STOCK_AMOUNT,formattedamount)
         db.update(TABLE_STOCK,cv,"artid="+id,null)
         db.close()
     }
 
-    fun decreaseStock(amount: Int,id : Int) {
+    fun changeMinStock(amount: Double,id : Int) {
+        var formattedamount = String.format("%.2f",amount)
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(COL_STOCK_AMOUNT,amount)
+        cv.put(COL_MINSTOCK_AMOUNT,formattedamount)
         db.update(TABLE_STOCK,cv,"artid="+id,null)
         db.close()
     }
 
-
-
-    fun increaseMinStock(amount: Int,id : Int) {
-        val db = this.writableDatabase
-        val cv = ContentValues()
-        cv.put(COL_MINSTOCK_AMOUNT,amount)
-        db.update(TABLE_STOCK,cv,"artid="+id,null)
-        db.close()
-    }
-
-    fun decreaseMinStock(amount: Int,id : Int) {
-        val db = this.writableDatabase
-        val cv = ContentValues()
-        cv.put(COL_MINSTOCK_AMOUNT,amount)
-        db.update(TABLE_STOCK,cv,"artid="+id,null)
-        db.close()
-    }
 
     fun turnOnBuy(id:Int) {
         val db = this.writableDatabase
@@ -339,8 +298,8 @@ class DataBaseHandler(var context: Context): SQLiteOpenHelper(context, DATABASE_
                 var stock = Stock()
                 stock.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 stock.art_id = result.getString(result.getColumnIndex(COL_ART_ID)).toInt()
-                stock.stock = result.getString(result.getColumnIndex(COL_STOCK_AMOUNT)).toInt()
-                stock.minStock = result.getString(result.getColumnIndex(COL_MINSTOCK_AMOUNT)).toInt()
+                stock.stock = result.getString(result.getColumnIndex(COL_STOCK_AMOUNT)).toFloat()
+                stock.minStock = result.getString(result.getColumnIndex(COL_MINSTOCK_AMOUNT)).toFloat()
                 return stock
             }while (result.moveToNext())
         }
